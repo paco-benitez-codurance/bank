@@ -4,7 +4,7 @@ public class AccountServiceImpl implements AccountService {
 
   private static final String HEADER = "Date || Amount || Balance\n";
   private final Console console;
-  private boolean hasDeposit;
+  private int lastAmount;
 
   public AccountServiceImpl(Console console) {
     this.console = console;
@@ -12,7 +12,7 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   public void deposit(int amount) {
-    hasDeposit = true;
+    lastAmount = amount;
   }
 
   @Override
@@ -22,8 +22,14 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   public void printStatement() {
-    if (hasDeposit) {
-      console.writeInConsole(HEADER + "10/01/2012 || 1000 || 1000");
-    } else console.writeInConsole(HEADER);
+    console.writeInConsole(HEADER + amountLine());
+  }
+
+  private String amountLine() {
+    if(lastAmount > 0) {
+      return "10/01/2012 || " + lastAmount + " || " + lastAmount;
+    } else {
+      return "";
+    }
   }
 }

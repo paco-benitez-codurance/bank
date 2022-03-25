@@ -10,6 +10,8 @@ When they print their bank statement
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.mockito.Mockito.mock;
@@ -35,22 +37,14 @@ public class AccountServiceShould {
     verify(console).writeInConsole(expectedOutput);
   }
 
-  @Test
-  void a_client_can_make_a_deposit() {
-    accountService.deposit(1000);
-    String expectedOutput = "Date || Amount || Balance\n" + "10/01/2012 || 1000 || 1000";
+  @ParameterizedTest
+  @ValueSource(ints = {1000, 2000})
+  void a_client_can_make_a_deposit(int amount) {
+    accountService.deposit(amount);
     accountService.printStatement();
 
+    String expectedOutput = "Date || Amount || Balance\n" + "10/01/2012 || " + amount +" || " + amount;
     verify(console).writeInConsole(expectedOutput);
   }
 
-  @Test
-  void a_client_can_make_a_deposit_of_2000() {
-    accountService.deposit(2000);
-
-    String expectedOutput = "Date || Amount || Balance\n" + "10/01/2012 || 2000 || 2000";
-    accountService.printStatement();
-
-    verify(console).writeInConsole(expectedOutput);
-  }
 }
