@@ -2,6 +2,7 @@ package bank;
 
 public class AccountServiceImpl implements AccountService {
 
+    private static final String HEADER = "Date || Amount || Balance\n";
     private final Console console;
 
     public AccountServiceImpl(Console console) {
@@ -19,6 +20,6 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void printStatement() {
-        throw new UnsupportedOperationException();
+        console.writeInConsole(HEADER);
     }
 }

@@ -1,5 +1,6 @@
 package bank;
 
-public interface Console {
+interface Console {
     String output();
+    void writeInConsole(String expectedOutput);
 }

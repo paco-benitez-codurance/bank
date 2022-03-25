@@ -8,22 +8,32 @@ When they print their bank statement
  */
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
 public class AccountServiceShould {
 
+  @Captor
+  ArgumentCaptor<String> stringArgumentCaptor;
+
   @Test
-  void account_service_makes_a_deposit() {
+  void when_print_statement_console_writeInConsoleIsCalled() {
     Console console = mock(Console.class);
+
     String expectedOutput = "Date || Amount || Balance\n";
 
     AccountService accountService = new AccountServiceImpl(console);
     accountService.printStatement();
-    assertEquals(expectedOutput, console.output());
+
+    verify(console).writeInConsole(expectedOutput);
   }
 
-  @Disabled
   @Test
   void a_client_can_make_a_deposit() {
     Console console = mock(Console.class);
@@ -32,6 +42,9 @@ public class AccountServiceShould {
     accountService.deposit(1000);
     String expectedOutput = "Date       || Amount || Balance\n" + "10/01/2012 || 1000   || 1000";
     accountService.printStatement();
-    assertEquals(expectedOutput, console.output());
+
+    verify(console).writeInConsole(stringArgumentCaptor.capture());
+
+    assertTrue(stringArgumentCaptor.getValue().contains("1000"));
   }
 }
