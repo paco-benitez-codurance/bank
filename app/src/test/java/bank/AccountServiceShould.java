@@ -43,4 +43,14 @@ public class AccountServiceShould {
 
     verify(console).writeInConsole(expectedOutput);
   }
+
+  @Test
+  void a_client_can_make_a_deposit_of_2000() {
+    accountService.deposit(2000);
+
+    String expectedOutput = "Date || Amount || Balance\n" + "10/01/2012 || 2000 || 2000";
+    accountService.printStatement();
+
+    verify(console).writeInConsole(expectedOutput);
+  }
 }
